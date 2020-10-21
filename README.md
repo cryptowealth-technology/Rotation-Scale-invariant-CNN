@@ -1,6 +1,12 @@
 # Rotation-Scale-invariant-CNN
 Convolutional neural network (2D index) approximate invariant properties implicitly by max-pooling. Thus filters fail to generalize with drastic changes in scale and rotation. In this page, I show 2D convolution on **`Frequency`** &amp; **`Direction`** is a natural way to think of scale and rotation.
 
+# Background
+Fourier transform is a decomposition method that can decompose any function into weighted sum of series of characteristic functions of the heat equation.
+In 2D, chararcteristic functions are wave-like, each wave has two parameters **`Frequency`** and **`Direction`**.
+
+<img src="icon/characteristic.png" width=600>
+
 # Pros & Cons
 
 * Pros:
@@ -12,18 +18,9 @@ Convolutional neural network (2D index) approximate invariant properties implici
      This could be approximately solved by [`Equal Temperament`](https://en.wikipedia.org/wiki/Equal_temperament) & `dilation convolution` on Frequency dimension.
   2. Smaller propotional area of the desired pattern in the image gives a weaker signal. I try to adjust it by quadratic growth rewards.
 
-# Background
-Fourier transform is a decomposition method that can decompose any function into weighted sum of series of characteristic functions of the heat equation.
-In 2D, chararcteristic functions are wave-like, each wave has two parameters **`Frequency`** and **`Direction`**.
-
-<img src="icon/characteristic.png" width=600>
-
 # Image Preprossing
 Instead of using ![](https://latex.codecogs.com/svg.latex?cos(k\omega),%20k\in%20N),
 geometric decay series was used here for scaling property.
-
-
-![](https://latex.codecogs.com/svg.latex?T:%20img%20\mapsto%20|F|%20\times%20|D|)
 
 In preprossing stage, images were decompose into linear combination of series of waves with differ frequencies and directions. Store them as a 2D array.
 
@@ -32,6 +29,15 @@ In preprossing stage, images were decompose into linear combination of series of
 Notice that only `c` are considered features. **Dropping phase parameter is actually a hash method of location invariant**, because pattern in different locations are now in the same bucket (feature combination).
 
 <img src="icon/padding.png" width=600>
+
+Arrange ![](https://latex.codecogs.com/svg.latex?c_{ij}) as a 2D-array with directions in counterclockwise order, frequency in order of size.
+
+![](https://latex.codecogs.com/svg.latex?T:%20img%20\mapsto%20|F|%20\times%20|D|)
+
+* **Q**: How to decide maximum frequency?
+  In sampling theory, the estimation of patterns that are more frequent than the sampling frequency might be distorted. (Since we don't have Dirac comb)
+  That is to say, width of pixel is a reasonable minimal period.
+  This also give a perfect explaination of zero padding, zero means unobservability of frequency higher than sampling frequency.
 
 # Invariant Properties
 
