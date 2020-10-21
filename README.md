@@ -20,7 +20,7 @@ In 2D, chararcteristic functions are wave-like, each wave has two parameters **`
 
 # Image Preprossing
 Instead of using ![](https://latex.codecogs.com/svg.latex?cos(k\omega),%20k\in%20N),
-geometric decay series was used here for scaling property.
+geometric growth series was used here for scaling property.
 
 In preprossing stage, images were decompose into linear combination of series of waves with differ frequencies and directions. Store them as a 2D array.
 
@@ -43,7 +43,7 @@ Arrange ![](https://latex.codecogs.com/svg.latex?c_{ij}) as a 2D-array with dire
 
 If we apply 2D convolution on these feature map, with `kernel size = (n, d)`. #`d` had better equal to number of direction.
 
-We can see that left-shift of filter on **`Direction`** is a clockwise rotation, up-shift on **`frequency`** means scaling up. Since we choose a small decay rate, almost all  scales are considered.
+We can see that left-shift of filter on **`Direction`** is a clockwise rotation, up-shift on **`frequency`** means scaling up. By choosing a small growth rate, almost all  scales are considered.
 
 <img src="icon/conv.png" width=600>
 
@@ -52,11 +52,13 @@ We can see that left-shift of filter on **`Direction`** is a clockwise rotation,
 Equal temperament are first invented for [harmonic melody](https://www.youtube.com/watch?v=cyW5z-M2yzw&ab_channel=3Blue1Brown), due to its approximation of simple whole number ratio. 
 
 Take 12-ET as example: 
-+----+----+
-|d^0|1|
-|d^12|2|
-|d^19|3|
-|d^24, d^28, d^31, d^34, 36, 38|
+
+<img src="icon/equal_temperament.png" width=800> 
+
+Approximate othogonal Fourier series by choosing 12-ET as growth rate and harmonic numbers (0, 12, 19, 24...) as diltaion indice on Frequency dimension.
+
+# Pooling 
+Pooling(Max/Mean) on Direction dimension gives a vagueness to the shape of the pattern.
 
 # Stacked filter 
 Since composition of convolution operator is another convolution(another filter on original space), of course you can stack multiple filters.
