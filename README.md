@@ -1,8 +1,15 @@
 # Rotation-Scale-invariant-CNN
-Convolutional neural network (2D index) approximate invariant properties implicitly by max-pooling. Thus filters fail to generalize with drastic changes in scale and rotation. In this page, I show 2D convolution on **`Frequency`** &amp; **`Direction`** is a natural way to think of scaling and rotation.
+Convolutional neural network (2D index) approximate invariant properties implicitly by max-pooling. Thus filters fail to generalize with drastic changes in scale and rotation. In this page, I show 2D convolution on **`Frequency`** &amp; **`Direction`** is a natural way to think of scale and rotation.
 
-The method proposed here can handle images with different sizes.
+# Pros & Cons
 
+* Pros:
+  1. Images size are normalized at preprossing stage, filters are now capturing patterns between images of different sizes.
+  2. GlobalMaxPooling makes convoution simple, you no longer need to stack deep convolutional networks.
+
+* Cons:
+  1. Fourier series are not `correctly` used here, not sure about the theoretical background of geometric frequency series.
+  2. Propotional area of the desired pattern in the image plays a important role. Hope nonlinear activation can help dealing with it.
 
 # Background
 Fourier transform is a decomposition method that can decompose any function into weighted sum of series of characteristic functions of the heat equation.
@@ -11,10 +18,12 @@ In 2D, chararcteristic functions are wave-like, each wave has two parameters **`
 <img src="icon/characteristic.png" width=600>
 
 # Image Preprossing
-Instead of using <img src="https://render.githubusercontent.com/render/math?math=cos(k\pi), sin(k\pi)">, 
+Instead of using ![](https://latex.codecogs.com/svg.latex?cos(k\omega),\;\;%20k\in%20N),
 geometric decay series was used here for scaling property.
 
-Image was decompose into linear combination of series of waves.
+In preprossing stage, images were decompose into linear combination of series of waves with differ frequencies and directions. 
+
+Notice: ![](https://latex.codecogs.com/svg.latex?a%20\cdot%20cos(w)%20+%20b%20\cdot%20sin(w)%20=%20\sqrt{a^2+b^2}%20\cdot%20cos(w%27)=c%20\cdot%20cos(\omega%27))
 
 <img src="icon/padding.png" width=600>
 
