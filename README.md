@@ -35,9 +35,12 @@ Arrange ![](https://latex.codecogs.com/svg.latex?c_{ij}) as a 2D-array with dire
 ![](https://latex.codecogs.com/svg.latex?T:%20img%20\mapsto%20|F|%20\times%20|D|)
 
 * **Q**: How to decide maximum frequency?
-  In sampling theory, the estimation of patterns that are more frequent than the sampling frequency might be distorted. (Since we don't have Dirac comb)
-  That is to say, width of pixel is a reasonable minimal period.
-  This also give a perfect explaination of zero padding, zero means unobservability of frequency higher than sampling frequency.
+
+  In sampling theory, the estimation of patterns that are more frequent than the sampling frequency might be distorted (Since we don't have Dirac comb).
+  
+  That is to say, width of pixel could be a reasonable lower bound for period.
+  
+  This also give a perfect explaination of zero padding —— Unobservability of frequencies higher than sampling frequency.
 
 # Invariant Properties
 
@@ -57,12 +60,36 @@ Take 12-ET as example:
 
 Approximate othogonal Fourier series by choosing 12-ET as growth rate and harmonic numbers (0, 12, 19, 24...) as diltaion indice on Frequency dimension.
 
-# Pooling 
+# Model structure
+
+<img src="icon/model.png" width=600> 
+
+
+
+# Experiment
+
+Generated various of rotation, scale, repetition and mask from an image.
+
+Perform a binary classification between generated images and other images.
+
+<img src="icon/kid.png" width=600> 
+
+*Kid is a character in [`Yakitate!! Japan`](https://en.wikipedia.org/wiki/Yakitate!!_Japan). You can swap his face to anyone and it will always make sense !!*
+
+* Tests
+  1. Test if that trained filter can generalize to images with other rotations & scales.
+  2. Test if this filter can capture Kid's face in scenes that Kid appears.
+
+# Filter visualization
+
+# Discussion
+
+* **Pooling**
 Pooling(Max/Mean) on Direction dimension gives a vagueness to the shape of the pattern.
 
-# Stacked filter 
+* **Stacked filter**
 Since composition of convolution operator is another convolution(another filter on original space), of course you can stack multiple filters.
 
-# Challenge 
+* **Challenge**
 If only part of the image shown in the picture, signal maynot strong enough for filters. 
 Need some localization pattern detecting, Which is time domain convolution (traditional one), to detect wave-like pattern.
