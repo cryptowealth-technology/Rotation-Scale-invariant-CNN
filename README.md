@@ -3,14 +3,14 @@ Convolutional neural network (2D index) approximate invariant properties implici
 
 # Background
 Fourier transform is a decomposition method that can decompose any function into weighted sum of series of characteristic functions of the heat equation.
-In 2D, chararcteristic functions are wave-like, each wave has two parameters **`Frequency`** and **`Direction`**.
+In 2D, characteristic functions are wave-like, each wave has two parameters **`Frequency`** and **`Direction`**.
 
 <img src="icon/characteristic.png" width=600>
 
 # Pros & Cons
 
 * Pros:
-  1. Images size are normalized at preprossing stage, filters are now capturing patterns between images of different sizes.
+  1. Images size are normalized at preprocessing stage, filters are now capturing patterns between images of different sizes.
   2. GlobalMaxPooling makes pattern recognition simple, no longer need to stack deep convolutional networks.
 
 * Cons:
@@ -18,11 +18,11 @@ In 2D, chararcteristic functions are wave-like, each wave has two parameters **`
      This could be approximately solved by [`Equal Temperament`](https://en.wikipedia.org/wiki/Equal_temperament) & `dilation convolution` on Frequency dimension.
   2. Smaller propotional area of the desired pattern in the image gives a weaker signal. I try to adjust it by quadratic growth rewards.
 
-# Image Preprossing
+# Image Preprocessing
 Instead of using ![](https://latex.codecogs.com/svg.latex?cos(k\omega),%20k\in%20N),
 geometric growth series was used here for scaling property.
 
-In preprossing stage, images were decompose into linear combination of series of waves with differ frequencies and directions. Store them as a 2D array.
+In preprocessing stage, images were decompose into linear combination of series of waves with differ frequencies and directions. Store them as a 2D array.
 
 ![](https://latex.codecogs.com/svg.latex?a%20\cdot%20cos(\omega)%20+%20b%20\cdot%20sin(\omega)%20=%20\sqrt{a^2+b^2}%20\cdot%20cos(\omega%27)=c%20\cdot%20cos(\omega%27))
 
@@ -62,7 +62,7 @@ Approximate othogonal Fourier series by choosing 12-ET as growth rate and harmon
 
 # Model structure
 
-<img src="icon/model.png" width=600> 
+<img src="icon/model.png" width=800> 
 
 
 
@@ -85,11 +85,11 @@ Perform a binary classification between generated images and other images.
 # Discussion
 
 * **Pooling**
-Pooling(Max/Mean) on Direction dimension gives a vagueness to the shape of the pattern.
+  Pooling(Max/Mean) on Direction dimension gives a vagueness to the shape of the pattern.
 
 * **Stacked filter**
-Since composition of convolution operator is another convolution(another filter on original space), of course you can stack multiple filters.
+  Since composition of convolution operator is another convolution(another filter on original space), of course you can stack multiple filters.
 
 * **Challenge**
-If only part of the image shown in the picture, signal maynot strong enough for filters. 
-Need some localization pattern detecting, Which is time domain convolution (traditional one), to detect wave-like pattern.
+  If only part of the image shown in the picture, signal maynot strong enough for filters. 
+  Need some localization pattern detecting, Which is time domain convolution (traditional one), to detect wave-like pattern.
