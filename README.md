@@ -7,6 +7,10 @@ In 2D, characteristic functions are wave-like, each wave has two parameters **`F
 
 <img src="icon/characteristic.png" width=600>
 
+ex: Decomposition of an image `M`
+
+<img src="icon/decomposition.png" width=300>
+
 # Pros & Cons
 
 * Pros:
@@ -14,9 +18,9 @@ In 2D, characteristic functions are wave-like, each wave has two parameters **`F
   2. GlobalMaxPooling makes pattern recognition simple, no longer need to stack deep convolutional networks.
 
 * Cons:
-  1. Fourier series are not `correctly` used here. Obvious, geometric frequency series is not orthogonal. 
-     This could be approximately solved by [`Equal Temperament`](https://en.wikipedia.org/wiki/Equal_temperament) & `dilation convolution` on Frequency dimension.
-  2. Smaller propotional area of the desired pattern in the image gives a weaker signal. I try to adjust it by quadratic growth rewards.
+  1. Fourier series are **not correctly** used here. Obvious, geometric frequency series is not orthogonal. 
+     This could be approximately solved by [`Equal Temperament`](#equal-temperament) & `dilation convolution` on Frequency dimension.
+  2. Smaller propotional area of the desired pattern in the image gives a weaker signal. I try to adjust it by quadratic growth rewards (see [below](#invariant-properties)).
 
 # Image Preprocessing
 Instead of using ![](https://latex.codecogs.com/svg.latex?cos(k\omega),%20k\in%20N),
@@ -26,7 +30,7 @@ In preprocessing stage, images were decompose into linear combination of series 
 
 ![](https://latex.codecogs.com/svg.latex?a%20\cdot%20cos(\omega)%20+%20b%20\cdot%20sin(\omega)%20=%20\sqrt{a^2+b^2}%20\cdot%20cos(\omega%27)=c%20\cdot%20cos(\omega%27))
 
-Notice that only `c` are considered features. **Dropping phase parameter is actually a hash method of location invariant**, because pattern in different locations are now in the same bucket (feature combination).
+Notice that only `c` are considered features. **Ignoring phase parameter is actually a hash method that gives location invariance**, because pattern in different locations are now in the same bucket (feature combination).
 
 <img src="icon/padding.png" width=600>
 
@@ -40,19 +44,23 @@ Arrange ![](https://latex.codecogs.com/svg.latex?c_{ij}) as a 2D-array with dire
   
   That is to say, width of pixel could be a reasonable lower bound for period.
   
-  This also give a perfect explaination of zero padding —— Unobservability of frequencies higher than sampling frequency.
+  This also give a perfect explaination of zero padding — Unobservability of frequencies higher than sampling frequency.
 
 # Invariant Properties
 
-If we apply 2D convolution on these feature map, with `kernel size = (n, d)`. #`d` had better equal to number of direction.
+Rotation & scale operation on latents:
 
-We can see that left-shift of filter on **`Direction`** is a clockwise rotation, up-shift on **`frequency`** means scaling up. By choosing a small growth rate, almost all  scales are considered.
+<img src="icon/rotation_scale.png" width=800>
+
+If we apply 2D convolution on these feature map, we can see that left-shift of filter on **`Direction`** is a clockwise rotation, up-shift on **`frequency`** means scaling up. 
+
+By choosing a small rotation angle/growth rate, almost all rotationss/scales are considered.
 
 <img src="icon/conv.png" width=600>
 
 # Equal Temperament
 
-Equal temperament are first invented for [harmonic melody](https://www.youtube.com/watch?v=cyW5z-M2yzw&ab_channel=3Blue1Brown), due to its approximation of simple whole number ratio. 
+[Equal temperament](https://en.wikipedia.org/wiki/Equal_temperament) are first invented for [harmonic melody](https://www.youtube.com/watch?v=cyW5z-M2yzw&ab_channel=3Blue1Brown), due to its approximation of simple whole number ratio. 
 
 Take 12-ET as example: 
 
@@ -85,11 +93,14 @@ Perform a binary classification between generated images and other images.
 # Discussion
 
 * **Pooling**
-  Pooling(Max/Mean) on Direction dimension gives a vagueness to the shape of the pattern.
 
-* **Stacked filter**
-  Since composition of convolution operator is another convolution(another filter on original space), of course you can stack multiple filters.
+  Pooling on Direction dimension gives a vagueness to the shape of the pattern.
+
+* **Deeper?**
+
+  Only harmonic dilated filter are approximately othogonal, stacking filters will ruin the structure. But it may give some unexpected results.
 
 * **Challenge**
+
   If only part of the image shown in the picture, signal maynot strong enough for filters. 
   Need some localization pattern detecting, Which is time domain convolution (traditional one), to detect wave-like pattern.
