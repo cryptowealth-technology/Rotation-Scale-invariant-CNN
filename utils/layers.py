@@ -4,12 +4,14 @@ from keras.layers import Conv2D, Lambda, Add, ZeroPadding2D
 def Dilated2D(filters, kernel_size, dilation_rate=(1, 1), use_bias=True, **kwargs):
     """
     Support list of different dilation rates on first dimension(height).
+
+    With zero padding on first dimension.
     
     # Arguments
 
     filters: int, the dimensionality of the output space  
         (i.e. the number of output filters in the convolution).
-    kernel_size: (int, int), 
+    kernel_size: (int, int), filter
         specifying the height and width of the 2D convolution window.  
     dilation_rate: (int, int) or (List[int], int), 
         specifying the dilation rate to use for dilated convolution.
@@ -27,7 +29,9 @@ def Dilated2D(filters, kernel_size, dilation_rate=(1, 1), use_bias=True, **kwarg
 
             conv = Conv2D(filters=filters, 
                           kernel_size=kernel_size, 
-                          dilation_rate=dilation_rate, 
+                          dilation_rate=dilation_rate,
+                          use_bias=use_bias,
+                          name='DL',
                           **kwargs
                           )(padded)
             return conv
@@ -47,10 +51,11 @@ def Dilated2D(filters, kernel_size, dilation_rate=(1, 1), use_bias=True, **kwarg
                             kernel_size=(1, columns), 
                             dilation_rate=(1, column_rate), 
                             use_bias=use_bias,
+                            name='DL_0',
                             **kwargs
                             )(inputs)
                     ]
-            for ind in dilation_index:
+            for i, ind in enumerate(dilation_index, start=1):
                 # input_shape is `channel last`, (batch_size, height, width, channels)
                 
                 # drop values before target index
@@ -60,6 +65,7 @@ def Dilated2D(filters, kernel_size, dilation_rate=(1, 1), use_bias=True, **kwarg
                               kernel_size=(1, columns), 
                               dilation_rate=(1, column_rate), 
                               use_bias=False,
+                              name=f'DL_{i}',
                               **kwargs
                               )(drophead)
                 # Bottom zero padding
