@@ -20,7 +20,7 @@ ex: Decomposition of an image `M`
 * Cons:
   1. Fourier series are **not correctly** used here. Obvious, geometric frequency series is not orthogonal. 
      This could be approximately solved by [`Equal Temperament`](#equal-temperament) & `dilation convolution` on Frequency dimension.
-  2. Smaller propotional area of the desired pattern in the image gives a weaker signal. I try to adjust it by quadratic growth rewards (see [below](#invariant-properties)).
+  2. Smaller propotional area of the desired pattern in the image gives a weaker signal. I try to adjust it by normalization within same frequency (see [below](#invariant-properties)).
 
 # Image Preprocessing
 Instead of using ![](https://latex.codecogs.com/svg.latex?cos(k\omega),%20k\in%20N),
@@ -58,6 +58,10 @@ By choosing a small rotation angle/growth rate, almost all rotationss/scales are
 
 <img src="icon/conv.png" width=600>
 
+# Visualization
+
+[<img src="icon/augmentation.png" width=800>](augmentation.ipynb)
+
 # Equal Temperament
 
 [Equal temperament](https://en.wikipedia.org/wiki/Equal_temperament) are first invented for [harmonic melody](https://www.youtube.com/watch?v=cyW5z-M2yzw&ab_channel=3Blue1Brown), due to its approximation of simple whole number ratio. 
@@ -72,27 +76,25 @@ Approximate othogonal Fourier series by choosing 12-ET as growth rate and harmon
 
 <img src="icon/model.png" width=800> 
 
-
-
 # Experiment
 
 Generated various of rotation, scale, repetition and mask from an image.
 
-Perform a binary classification between generated images and other images.
+Self-supervised learning, that is **Find a filter that best describe the image** on feature matrix.
 
 <img src="icon/kid.png" width=600> 
 
 *Kid is a character in [`Yakitate!! Japan`](https://en.wikipedia.org/wiki/Yakitate!!_Japan). You can swap his face to anyone and it will always make sense !!*
 
 * Tests
-  1. Test if that trained filter can generalize to images with other rotations & scales.
+  1. Test if that trained filter can generalize to images with other rotations & scales (& noise).
   2. Test if this filter can capture Kid's face in scenes that Kid appears.
-
-# Filter visualization
 
 # Discussion
 
 * **Pooling**
+
+  GlobalMaxPooling is harder to train when feature matrix is larger. (Filter got correct gradient only when argmax of Pooling layer is correct)
 
   Pooling on Direction dimension gives a vagueness to the shape of the pattern.
 
